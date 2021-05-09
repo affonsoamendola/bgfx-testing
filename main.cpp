@@ -1,30 +1,33 @@
 #include <stdio.h>
 
-#include "sdl_integration.hpp"
-#include "bgfx_integration.hpp"
-//#include "imgui_integration.hpp"
+#include "main.hpp"
+
+#include "input.hpp"
+#include "graphics.hpp"
+#include "interface.hpp"
 
 const char*     WINDOW_TITLE = "ImGUI testing";
 
 bool software_running = true;
-
-int count = 0;
-int limit = 120;
+bool debug_mode = true;
 
 int main(int argc, char const *argv[])
 {   
     //Start modules
     start_sdl();
     start_bgfx();
+    start_imgui();
 
-    while(count < limit)
+    while(software_running)
     {
-        draw_frame_bgfx();
-        count++;
+        handle_input();
+        render();
     }
 
+    quit_imgui();
     quit_bgfx();
     quit_sdl();
 
     return EXIT_SUCCESS;
 }
+

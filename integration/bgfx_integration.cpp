@@ -69,7 +69,7 @@ static void setup_bgfx_platform_data(bgfx::PlatformData &pd,
         #endif
 
         default: 
-            printf("Unknow Window System! Aborting!\n");
+            printf("Unknown Window System! Aborting!\n");
             exit(EXIT_FAILURE);
             break;
     }
@@ -101,14 +101,10 @@ void start_bgfx()
     bgfx::setDebug(BGFX_DEBUG_TEXT);
 }
 
-extern int count;
-
 void draw_frame_bgfx()
 {
     bgfx::setViewRect(0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     bgfx::touch(0);
-    bgfx::dbgTextClear();
-    bgfx::dbgTextPrintf(1, 1, 0x4f, "Hello World! %d", count);
 
     bgfx::frame();
 }

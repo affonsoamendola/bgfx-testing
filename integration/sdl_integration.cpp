@@ -46,4 +46,5 @@ void start_sdl()
 void quit_sdl() //Gracefully exit all of SDL
 {
     SDL_DestroyWindow(window);
+    SDL_Quit();
 }
