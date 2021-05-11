@@ -1,3 +1,6 @@
 #pragma once
 
-void handle_input();
+namespace input
+{
+    void update();
+}

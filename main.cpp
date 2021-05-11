@@ -14,19 +14,30 @@ bool debug_mode = true;
 int main(int argc, char const *argv[])
 {   
     //Start modules
-    start_sdl();
-    start_bgfx();
-    start_imgui();
+    sdli::init(); //Start SDL using the sdli(ntegration) headers/code
+    bgfxi::init(); //Start bgfx using the bgfxi(ntegration) headers/code
+    imguii::init(); //Start Dear imGui using the imguii(ntegration) headers/code
+
+    gfx::init();
+    dui::init();
 
     while(software_running)
     {
-        handle_input();
-        render();
+        imguii::start_frame(); //Starts imGui frame
+
+        input::update(); //Handles input
+        gfx::render();   //Render 3D/2D
+        dui::draw();    //Draws the debug ui on top of everything
+
+        imguii::end_frame(); //Ends imGui frame
     }
 
-    quit_imgui();
-    quit_bgfx();
-    quit_sdl();
+    dui::quit();
+    gfx::quit();
+
+    imguii::quit();
+    bgfxi::quit();
+    sdli::quit();
 
     return EXIT_SUCCESS;
 }

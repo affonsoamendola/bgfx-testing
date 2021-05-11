@@ -2,5 +2,8 @@
 
 #include <bgfx/bgfx.h>
 
-void start_bgfx();
-void quit_bgfx();
+namespace bgfxi
+{
+    void init();
+    void quit();    
+}

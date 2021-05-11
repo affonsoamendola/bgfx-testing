@@ -5,8 +5,11 @@
 #include <imgui/imgui_impl_sdl.h>
 #include <bx/platform.h>
 
-void start_imgui();
-void quit_imgui();
+namespace imguii
+{
+    void init();
+    void quit();
 
-void imgui_start_frame();
-void imgui_end_frame();
+    void start_frame();
+    void end_frame();
+}

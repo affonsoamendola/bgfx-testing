@@ -20,7 +20,7 @@ $(BIN): $(OBJS)
 	echo "Done!"
 
 %.o: %.cpp
-	$(CPP) -c $(INCLUDE) $(CFLAGS) $< -o $@    
+	$(CPP) -c $(INCLUDE) $(CFLAGS) $< -o $@   
 
 .PHONY: clean run
 

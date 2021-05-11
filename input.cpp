@@ -2,25 +2,28 @@
 
 #include "input.hpp"
 
-void handle_input()
+namespace input
 {
-    SDL_Event currentEvent;
-    while (SDL_PollEvent(&currentEvent) != 0) 
+    void update()
     {
-        ImGui_ImplSDL2_ProcessEvent(&currentEvent);
-
-        if (currentEvent.type == SDL_QUIT) 
+        SDL_Event currentEvent;
+        while (SDL_PollEvent(&currentEvent) != 0) 
         {
-            software_running = false;
-            break;
-        }
+            ImGui_ImplSDL2_ProcessEvent(&currentEvent);
 
-        if(currentEvent.type == SDL_KEYDOWN)
-        {
-            if( currentEvent.key.keysym.scancode == SDL_SCANCODE_D &&
-                currentEvent.key.keysym.mod & KMOD_CTRL)
+            if (currentEvent.type == SDL_QUIT) 
             {
-                debug_mode = !debug_mode;
+                software_running = false;
+                break;
+            }
+
+            if(currentEvent.type == SDL_KEYDOWN)
+            {
+                if( currentEvent.key.keysym.scancode == SDL_SCANCODE_D &&
+                    currentEvent.key.keysym.mod & KMOD_CTRL)
+                {
+                    debug_mode = !debug_mode;
+                }
             }
         }
     }

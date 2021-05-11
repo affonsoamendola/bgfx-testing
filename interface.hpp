@@ -1,3 +1,8 @@
 #pragma once
 
-void draw_gui();
+namespace dui
+{
+    void init();
+    void draw();
+    void quit();
+}

@@ -3,13 +3,17 @@
 #include <SDL.h>
 #include <SDL_syswm.h>
 
-extern const int        SCREEN_WIDTH;
-extern const int        SCREEN_HEIGHT;
+#include "vector.hpp"
 
-extern SDL_Window*      window;
-extern SDL_Surface*     screen_surface;
-extern SDL_DisplayMode  display_mode;
-extern SDL_SysWMinfo   wm_info;
+namespace sdli
+{
+    Vector2i get_window_resolution();
 
-void start_sdl();
-void quit_sdl();
+    extern SDL_Window*      window;
+    extern SDL_Surface*     screen_surface;
+    extern SDL_DisplayMode  display_mode;
+    extern SDL_SysWMinfo    wm_info;
+
+    void init();
+    void quit();
+}
