@@ -13,6 +13,7 @@ bool debug_mode = true;
 
 int main(int argc, char const *argv[])
 {   
+
     //Start modules
     sdli::init(); //Start SDL using the sdli(ntegration) headers/code
     bgfxi::init(); //Start bgfx using the bgfxi(ntegration) headers/code
@@ -20,6 +21,8 @@ int main(int argc, char const *argv[])
 
     gfx::init();
     dui::init();
+
+    input::init(); //Needs to be after sdli
 
     while(software_running)
     {
@@ -31,6 +34,8 @@ int main(int argc, char const *argv[])
 
         imguii::end_frame(); //Ends imGui frame
     }
+
+    input::quit();
 
     dui::quit();
     gfx::quit();
