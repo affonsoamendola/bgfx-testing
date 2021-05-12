@@ -11,7 +11,7 @@ CFLAGS = 	-MMD \
 			`sdl2-config --cflags` -Wall \
 		 	-O0 -g
 
-INCLUDE = -I./ -I./integration
+INCLUDE = -I./ -I./integration -I./stb
 
 all: $(BIN)
 
