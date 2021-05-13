@@ -3,9 +3,27 @@
 #include "graphics.hpp"
 #include "interface.hpp"
 #include "input.hpp"
+#include "timer.hpp"
+#include "resource.hpp"
 
 namespace dui
 {
+    //Collapsing header Engine variables
+
+    void init_engine_header()
+    {
+
+    }
+
+    void draw_engine_header()
+    {
+        if (ImGui::CollapsingHeader("Main Engine Module"))
+        {
+            ImGui::Text("Current fps : %f",         1.0f/timer::delta_time);
+            ImGui::Text("Current frame_time : %f",  timer::delta_time);
+        }
+    }
+
     //Collapsing header GFX Module variables
     static Color4f clear_color_input;
     static int viewport_input[4];
@@ -104,21 +122,86 @@ namespace dui
             }
         }
     }
+
+    //Collapsing header Resource Module variables
+    void init_resource_header()
+    {
+
+    }   
+
+    void draw_resource_header()
+    {
+        if (ImGui::CollapsingHeader("Loaded Resources"))
+        {
+            if (ImGui::BeginTable("table1", 4))
+            {
+                ImGui::TableSetupColumn("Name");
+                ImGui::TableSetupColumn("Hash ID");
+                ImGui::TableSetupColumn("Size (Bytes)");
+                ImGui::TableSetupColumn("Pointer");
+                ImGui::TableHeadersRow();
+
+                for(uint32_t i = 0; i < resource::MAX_RESOURCES; i++)
+                {
+                    //if(resource::resource_pile[i].id == 0) break;
+
+                    resource::Resource current = resource::resource_pile[i];
+
+                    ImGui::TableNextRow();
+                    
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("%s", current.name_str.c_str());
+
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%X", current.id);
+
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%d", current.length);
+
+                    ImGui::TableSetColumnIndex(3);
+                    ImGui::Text("%p", current.content); 
+                }
+                ImGui::EndTable();
+                ImGui::Text("Free index = %d", resource::free_index); 
+
+                static char buf1[64] = ""; ImGui::InputText("File",     buf1, 64);
+                static char buf2[64] = ""; ImGui::InputText("String ID",     buf2, 64);
+
+                if(ImGui::Button("Load Resource"))
+                {
+                    resource::load_resource(buf2, buf1, NULL);
+                }
+
+                ImGui::SameLine();
+
+                if(ImGui::Button("Destroy Resource"))
+                {
+                    resource::destroy_resource(buf2);
+                }
+            }
+        }   
+    }
     
     //
     void init()
     {
+        init_engine_header();
         init_gfx_header();
         init_input_header();
+        init_resource_header();
     }
 
     void draw()
     {
         if(debug_mode)
         {    
+            draw_engine_header();
             draw_gfx_header();
             draw_input_header();
+            draw_resource_header();
+            ImGui::ShowDemoWindow();
         }
+
     } 
 
     void quit()

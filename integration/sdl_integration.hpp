@@ -8,6 +8,7 @@
 namespace sdli
 {
     Vector2i get_window_resolution();
+    float get_aspect_ratio();
 
     extern SDL_Window*      window;
     extern SDL_Surface*     screen_surface;

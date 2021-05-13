@@ -6,7 +6,8 @@ namespace sdli
 {
     Vector2i window_resolution = {1300, 700};
     Vector2i get_window_resolution() { return window_resolution; }
-    
+    float get_aspect_ratio() { return (float)window_resolution.x/(float)window_resolution.y; }
+
     SDL_Window*     window = NULL;
     SDL_DisplayMode display_mode;
 
