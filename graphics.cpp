@@ -17,59 +17,8 @@ namespace gfx
 {
     Color4rgba clear_color;
     Rect4i main_viewport;   
-
-    struct PosColorVertex
-    {
-        float x;
-        float y;
-        float z;
-        uint32_t color; //In ABGR
-
-        static void init()
-        {
-            vertex_layout
-                .begin()
-                .add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float)
-                .add(bgfx::Attrib::Color0,   4, bgfx::AttribType::Uint8, true)
-                .end();
-        }
-
-        static bgfx::VertexLayout vertex_layout;
-    };
-
-    bgfx::VertexLayout PosColorVertex::vertex_layout;
-    bgfx::VertexBufferHandle vertex_buffer_handle;
-    bgfx::IndexBufferHandle index_buffer_handle;
-
+    
     //Render Cube
-    static PosColorVertex cube_vertices[] =
-    {
-        {-10.0f,  10.0f,  10.0f, 0xff555555 },
-        { 10.0f,  10.0f,  10.0f, 0xff0000ff },
-        {-10.0f, -10.0f,  10.0f, 0xff00ff00 },
-        { 10.0f, -10.0f,  10.0f, 0xff00ffff },
-        {-10.0f,  10.0f, -10.0f, 0xffff0000 },
-        { 10.0f,  10.0f, -10.0f, 0xffff00ff },
-        {-10.0f, -10.0f, -10.0f, 0xffffff00 },
-        { 10.0f, -10.0f, -10.0f, 0xffffffff },
-    };
-
-    static const uint16_t cube_tri_list[] =
-    {
-        0, 1, 2, // 0
-        1, 3, 2,
-        4, 6, 5, // 2
-        5, 6, 7,
-        0, 2, 4, // 4
-        4, 2, 6,
-        1, 5, 3, // 6
-        5, 7, 3,
-        0, 4, 1, // 8
-        4, 5, 1,
-        2, 3, 6, // 10
-        6, 3, 7,
-    };
-
     resource::Resource fragment_shader;
     resource::Resource vertex_shader;
 
@@ -90,20 +39,12 @@ namespace gfx
         main_viewport = {0, 0, resolution.x, resolution.y};
         clear_color.value = 0xFFA500FF;
 
-        //Render cube
         PosColorVertex::init();
-        vertex_buffer_handle = bgfx::createVertexBuffer(
-
-            bgfx::makeRef(cube_vertices, sizeof(cube_vertices)),
-            PosColorVertex::vertex_layout
-            );
-        index_buffer_handle = bgfx::createIndexBuffer(
-
-            bgfx::makeRef(cube_tri_list, sizeof(cube_tri_list))
-            );
-
+    
         //fragment_shader = load_resource("shaders/testfs.bin");
         //vertex_shader = load_resource("shaders/testvs.bin");
+
+    //This needs to be in the Material code eventually
 
         load_resource("test_fragment_shader", "shaders/testfs.bin", &fragment_shader);
         load_resource("test_vertex_shader", "shaders/testvs.bin", &vertex_shader);
@@ -115,6 +56,7 @@ namespace gfx
         vertex_shader_handle = bgfx::createShader(vertex_shader_buffer);
 
         program_handle = bgfx::createProgram(vertex_shader_handle, fragment_shader_handle, true);
+    //End of material placeholder
 
         //Render
     }
