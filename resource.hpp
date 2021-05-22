@@ -1,3 +1,5 @@
+#pragma once
+
 #include "bgfx_integration.hpp"
 #include "hash.hpp"
 

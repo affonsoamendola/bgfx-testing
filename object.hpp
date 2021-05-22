@@ -6,12 +6,12 @@
 
 struct Object
 {
-	Vector3f transform = {0};
+	Vector3f transform = {0.0f, 0.0f, 0.0f};
 
 	bgfx::VertexBufferHandle vertex_buffer_handle;
     bgfx::IndexBufferHandle index_buffer_handle;
 
-	static PosColorVertex cube_vertices[] =
+	const Vertex4xyzc vertices[8] =
     {
         {-10.0f,  10.0f,  10.0f, 0xff555555 },
         { 10.0f,  10.0f,  10.0f, 0xff0000ff },
@@ -23,7 +23,7 @@ struct Object
         { 10.0f, -10.0f, -10.0f, 0xffffffff },
     };
 
-    static const uint16_t cube_tri_list[] =
+    const uint16_t tris[36] =
     {
         0, 1, 2, // 0
         1, 3, 2,
@@ -39,5 +39,6 @@ struct Object
         6, 3, 7,
     };
 
-    void init();
+   	Object();
+    ~Object();
 };

@@ -3,6 +3,8 @@
 #include "graphics.hpp"
 #include "resource.hpp"
 #include "timer.hpp"
+#include "vertex.hpp"
+#include "scene.hpp"
 
 #pragma GCC diagnostic push 
 #pragma GCC diagnostic ignored "-Wsign-compare"
@@ -30,6 +32,8 @@ namespace gfx
     float x_rot = 0.0f;
     float y_rot = 0.0f;
 
+    Scene scene;
+
     //Render Cube
 
     void init()
@@ -39,7 +43,7 @@ namespace gfx
         main_viewport = {0, 0, resolution.x, resolution.y};
         clear_color.value = 0xFFA500FF;
 
-        PosColorVertex::init();
+        vertex::init();
     
         //fragment_shader = load_resource("shaders/testfs.bin");
         //vertex_shader = load_resource("shaders/testvs.bin");
@@ -58,6 +62,19 @@ namespace gfx
         program_handle = bgfx::createProgram(vertex_shader_handle, fragment_shader_handle, true);
     //End of material placeholder
 
+
+    //This is also placeholder
+        for(int i = 0; i < 10; i++)
+        {
+            Object object;
+
+            object.transform.x = 1.0f * i;
+            object.transform.z = -3.0f;
+
+            scene.objects.push_back(object);
+        }
+    //This is also placeholder
+
         //Render
     }
 
@@ -70,31 +87,32 @@ namespace gfx
         const bx::Vec3 at  = { 0.0f, 0.0f,   0.0f };
         const bx::Vec3 eye = { 0.0f, 0.0f, -35.0f };
 
+        float view[16];
+        bx::mtxLookAt(view, eye, at);
+
+        float proj[16];
+        bx::mtxProj(proj,
+                    60.0f, 
+                    sdli::get_aspect_ratio(),
+                    0.1f,
+                    100.0f,
+                    bgfx::getCaps()->homogeneousDepth
+                    );
+
+        bgfx::setViewTransform(0, view, proj);
+
+        uint64_t state = 0 
+            | BGFX_STATE_WRITE_R
+            | BGFX_STATE_WRITE_G
+            | BGFX_STATE_WRITE_B
+            | BGFX_STATE_WRITE_A
+            | BGFX_STATE_WRITE_Z
+            | BGFX_STATE_DEPTH_TEST_LESS
+            | BGFX_STATE_CULL_CW
+            | BGFX_STATE_MSAA;
+
+        for(auto it = scene.objects.begin(); it != scene.objects.end(); it++)
         {
-            float view[16];
-            bx::mtxLookAt(view, eye, at);
-
-            float proj[16];
-            bx::mtxProj(proj,
-                        60.0f, 
-                        sdli::get_aspect_ratio(),
-                        0.1f,
-                        100.0f,
-                        bgfx::getCaps()->homogeneousDepth
-                        );
-
-            bgfx::setViewTransform(0, view, proj);
-
-            uint64_t state = 0 
-                | BGFX_STATE_WRITE_R
-                | BGFX_STATE_WRITE_G
-                | BGFX_STATE_WRITE_B
-                | BGFX_STATE_WRITE_A
-                | BGFX_STATE_WRITE_Z
-                | BGFX_STATE_DEPTH_TEST_LESS
-                | BGFX_STATE_CULL_CW
-                | BGFX_STATE_MSAA;
-
             float mtx[16] = {0.0f};
 
             x_rot += 0.1f * timer::delta_time;
@@ -102,14 +120,12 @@ namespace gfx
 
             bx::mtxRotateXY(mtx, x_rot, y_rot);
 
-            mtx[12] = 0.0f;
-            mtx[13] = 0.0f;
-            mtx[14] = 0.0f;
-
+            bx::mtxTranslate(mtx, it->transform.x, it->transform.y, it->transform.z);
+            
             bgfx::setTransform(mtx);
 
-            bgfx::setVertexBuffer(0, vertex_buffer_handle);
-            bgfx::setIndexBuffer(index_buffer_handle);
+            bgfx::setVertexBuffer(0, it->vertex_buffer_handle);
+            bgfx::setIndexBuffer(it->index_buffer_handle);
 
             bgfx::setState(state);
 
@@ -124,8 +140,6 @@ namespace gfx
     void quit()
     {
         //render cube
-        bgfx::destroy(index_buffer_handle);
-        bgfx::destroy(vertex_buffer_handle);
         bgfx::destroy(program_handle);
         //render cube
     }

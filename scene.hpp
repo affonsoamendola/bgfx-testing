@@ -6,4 +6,4 @@
 struct Scene
 {
 	std::list<Object> objects;
-}
+};

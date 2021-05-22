@@ -1,8 +1,8 @@
 #pragma once
 
 #include <imgui/imgui.h>
-#include <imgui/imgui_impl_bgfx.h>
-#include <imgui/imgui_impl_sdl.h>
+#include <imgui_impl_bgfx.h>
+#include <imgui_impl_sdl.h>
 #include <bx/platform.h>
 
 namespace imguii
