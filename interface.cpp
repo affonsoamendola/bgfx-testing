@@ -1,15 +1,15 @@
+#include <list>
+
 #include "main.hpp"
 
-#include "graphics.hpp"
 #include "interface.hpp"
-#include "input.hpp"
-#include "timer.hpp"
-#include "resource.hpp"
 
 namespace dui
 {
-    //Collapsing header Engine variables
+    std::list<InterfaceModule> modules;
 
+    //Collapsing header Engine variables
+/*
     void init_engine_header()
     {
 
@@ -25,30 +25,7 @@ namespace dui
     }
 
     //Collapsing header GFX Module variables
-    static Color4f clear_color_input;
-    static int viewport_input[4];
-
-    void init_gfx_header()
-    {
-        clear_color_input = Color4f::from_Color4rgba(gfx::clear_color);
-        memcpy(&viewport_input, gfx::main_viewport.as_array(), sizeof(int) * 4);
-    }
-
-    void draw_gfx_header()
-    {
-        if (ImGui::CollapsingHeader("GFX Module"))
-        {
-            if(ImGui::ColorEdit4("Clear Color", (float*) &clear_color_input))
-            {
-                gfx::set_clear_color(clear_color_input.to_Color4rgba());
-            }
-
-            if(ImGui::InputInt4("Viewport Rect (x,y,w,h)", (int*) viewport_input))
-            {
-                gfx::set_main_viewport(Rect4i::from_array((int*)viewport_input));
-            }
-        }
-    }
+    
 
     //Collapsing header Input Module variables
     static int softkey_choice_index = 0;
@@ -181,24 +158,31 @@ namespace dui
             }
         }   
     }
-    
+*/
+
     //
+    void push_module(const InterfaceModule& t_module)
+    {
+        modules.push_back(t_module);
+    }
+
     void init()
     {
-        init_engine_header();
-        init_gfx_header();
-        init_input_header();
-        init_resource_header();
+        for(auto it = modules.begin(); it != modules.end(); it++)
+        {
+            it->init();   
+        }
     }
 
     void draw()
     {
         if(debug_mode)
         {    
-            draw_engine_header();
-            draw_gfx_header();
-            draw_input_header();
-            draw_resource_header();
+            for(auto it = modules.begin(); it != modules.end(); it++)
+            {
+                it->draw();   
+            }
+
             ImGui::ShowDemoWindow();
         }
 
@@ -206,6 +190,9 @@ namespace dui
 
     void quit()
     {
-        
+        for(auto it = modules.begin(); it != modules.end(); it++)
+        {
+            it->quit();   
+        }
     }
 }

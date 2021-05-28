@@ -1,10 +1,8 @@
 #include "main.hpp"
 
 #include "graphics.hpp"
-#include "resource.hpp"
-#include "timer.hpp"
-#include "vertex.hpp"
-#include "scene.hpp"
+
+#include "graphics_i.hpp"
 
 #pragma GCC diagnostic push 
 #pragma GCC diagnostic ignored "-Wsign-compare"
@@ -12,8 +10,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #pragma GCC diagnostic pop
-
-#include <bx/math.h>
 
 namespace gfx
 {
@@ -76,6 +72,7 @@ namespace gfx
     //This is also placeholder
 
         //Render
+        dui::push_module(gfx_interface_module);
     }
 
     void render()
@@ -113,23 +110,23 @@ namespace gfx
 
         for(auto it = scene.objects.begin(); it != scene.objects.end(); it++)
         {
-            float mtx[16] = {0.0f};
+            //float mtx[16] = {0.0f};
 
-            x_rot += 0.1f * timer::delta_time;
-            y_rot += 0.13f * timer::delta_time;
+            //x_rot += 0.1f * timer::delta_time;
+            //y_rot += 0.13f * timer::delta_time;
 
-            bx::mtxRotateXY(mtx, x_rot, y_rot);
+            //bx::mtxRotateXY(mtx, x_rot, y_rot);
 
-            bx::mtxTranslate(mtx, it->transform.x, it->transform.y, it->transform.z);
+            //bx::mtxTranslate(mtx, it->transform.x, it->transform.y, it->transform.z);
             
-            bgfx::setTransform(mtx);
+            //bgfx::setTransform(mtx);
 
-            bgfx::setVertexBuffer(0, it->vertex_buffer_handle);
-            bgfx::setIndexBuffer(it->index_buffer_handle);
+            //bgfx::setVertexBuffer(0, it->vertex_buffer_handle);
+            //bgfx::setIndexBuffer(it->index_buffer_handle);
 
-            bgfx::setState(state);
+            //bgfx::setState(state);
 
-            bgfx::submit(0, program_handle);
+            //bgfx::submit(0, program_handle);
         }
 
         //Render cube

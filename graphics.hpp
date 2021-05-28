@@ -3,7 +3,14 @@
 #include "color.hpp"
 #include "rect.hpp"
 
+#include "resource.hpp"
+#include "timer.hpp"
+#include "vertex.hpp"
+#include "scene.hpp"
+
 #include "stb_image.h"
+
+#include <bx/math.h>
 
 namespace gfx
 {   

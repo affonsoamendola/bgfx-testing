@@ -2,8 +2,6 @@
 
 Object::Object()
 {
-	printf("Created Object!");
-
 	vertex_buffer_handle = bgfx::createVertexBuffer(
 
 	            bgfx::makeRef(vertices, sizeof(vertices)),
