@@ -6,6 +6,8 @@
 
 struct Object
 {
+    std::string name_str;
+
 	Vector3f transform = {0.0f, 0.0f, 0.0f};
 
 	bgfx::VertexBufferHandle vertex_buffer_handle;

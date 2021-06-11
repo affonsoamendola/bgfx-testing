@@ -2,8 +2,6 @@
 
 #include "graphics.hpp"
 
-#include "graphics_i.hpp"
-
 #pragma GCC diagnostic push 
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
@@ -17,8 +15,8 @@ namespace gfx
     Rect4i main_viewport;   
     
     //Render Cube
-    resource::Resource fragment_shader;
-    resource::Resource vertex_shader;
+    resource::ResourceHandle fragment_shader;
+    resource::ResourceHandle vertex_shader;
 
     bgfx::ShaderHandle fragment_shader_handle;
     bgfx::ShaderHandle vertex_shader_handle;
@@ -58,7 +56,6 @@ namespace gfx
         program_handle = bgfx::createProgram(vertex_shader_handle, fragment_shader_handle, true);
     //End of material placeholder
 
-
     //This is also placeholder
         for(int i = 0; i < 10; i++)
         {
@@ -67,12 +64,21 @@ namespace gfx
             object.transform.x = 1.0f * i;
             object.transform.z = -3.0f;
 
-            scene.objects.push_back(object);
+            resource::ResourceHandle new_res;
+
+            std::string obj_name = ("Object " + std::to_string(i));
+
+            resource::create_resource_from_data(obj_name , 
+                                                &object, 
+                                                sizeof(object), 
+                                                &new_res, 
+                                                NULL);
+
+            //scene.objects.push_back(new_res);
         }
     //This is also placeholder
 
         //Render
-        dui::push_module(gfx_interface_module);
     }
 
     void render()
@@ -110,23 +116,25 @@ namespace gfx
 
         for(auto it = scene.objects.begin(); it != scene.objects.end(); it++)
         {
-            //float mtx[16] = {0.0f};
+            /*
+            float mtx[16] = {0.0f};
 
-            //x_rot += 0.1f * timer::delta_time;
-            //y_rot += 0.13f * timer::delta_time;
+            x_rot += 0.1f * timer::delta_time;
+            y_rot += 0.13f * timer::delta_time;
 
-            //bx::mtxRotateXY(mtx, x_rot, y_rot);
+            bx::mtxRotateXY(mtx, x_rot, y_rot);
 
-            //bx::mtxTranslate(mtx, it->transform.x, it->transform.y, it->transform.z);
+            bx::mtxTranslate(mtx, it->transform.x, it->transform.y, it->transform.z);
             
-            //bgfx::setTransform(mtx);
+            bgfx::setTransform(mtx);
 
-            //bgfx::setVertexBuffer(0, it->vertex_buffer_handle);
-            //bgfx::setIndexBuffer(it->index_buffer_handle);
+            bgfx::setVertexBuffer(0, it->vertex_buffer_handle);
+            bgfx::setIndexBuffer(it->index_buffer_handle);
 
-            //bgfx::setState(state);
+            bgfx::setState(state);
 
-            //bgfx::submit(0, program_handle);
+            bgfx::submit(0, program_handle);
+            */
         }
 
         //Render cube

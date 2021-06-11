@@ -24,4 +24,6 @@ namespace gfx
 
     void init();
     void quit();
+
+    extern Scene scene;
 }
